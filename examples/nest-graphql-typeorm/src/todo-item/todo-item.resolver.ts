@@ -1,6 +1,6 @@
-import { Filter } from '@nestjs-query/core';
+import { Filter, DeepPartial } from '@nestjs-query/core';
 import { ConnectionType, CRUDResolver } from '@nestjs-query/query-graphql';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import { AuthGuard } from '../auth.guard';
 import { SubTaskDTO } from '../sub-task/dto/sub-task.dto';
 import { TagDTO } from '../tag/dto/tag.dto';
@@ -8,7 +8,7 @@ import { TodoItemInputDTO } from './dto/todo-item-input.dto';
 import { TodoItemUpdateDTO } from './dto/todo-item-update.dto';
 import { TodoItemDTO } from './dto/todo-item.dto';
 import { TodoItemService } from './todo-item.service';
-import { TodoItemConnection, TodoItemQuery } from './types';
+import { TodoItemConnection, TodoItemQuery, CompleteTodoItemInputType } from './types';
 
 const guards = [AuthGuard];
 
@@ -54,5 +54,14 @@ export class TodoItemResolver extends CRUDResolver(TodoItemDTO, {
 
     // call the original queryMany method with the new query
     return this.queryMany({ ...query, ...{ filter } });
+  }
+
+  @Mutation(() => TodoItemDTO, {name: 'completeTodoItem', nullable: true})
+  async completeTodoItem(@Args('input') input: CompleteTodoItemInputType): Promise<TodoItemDTO> {
+    const dto: DeepPartial<TodoItemDTO> = {
+      completed: input.update.completed
+    };
+
+    return this.service.updateOne(input.id, dto);
   }
 }
