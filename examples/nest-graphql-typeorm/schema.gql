@@ -7,6 +7,18 @@ input BooleanFieldComparison {
   isNot: Boolean
 }
 
+input CompleteTodoItem {
+  completed: Boolean!
+}
+
+input CompleteTodoItemInputType {
+  """The id of the record to update"""
+  id: ID!
+
+  """The update to apply."""
+  update: CompleteTodoItem!
+}
+
 """Cursor for paging through collections"""
 scalar ConnectionCursor
 
@@ -132,6 +144,7 @@ type Mutation {
   removeTagsFromTodoItem(input: RelationsInput!): TodoItem!
   addSubTasksToTodoItem(input: RelationsInput!): TodoItem!
   addTagsToTodoItem(input: RelationsInput!): TodoItem!
+  completeTodoItem(input: CompleteTodoItemInputType!): TodoItem
   deleteOneSubTask(input: DeleteOneInput!): SubTaskDeleteResponse!
   deleteManySubTasks(input: DeleteManySubTasksInput!): DeleteManyResponse!
   updateOneSubTask(input: UpdateOneSubTaskInput!): SubTask!
@@ -543,5 +556,5 @@ input UpdateOneTodoItemInput {
   id: ID!
 
   """The update to apply."""
-  update: TodoItemUpdate!
+  update: CompleteTodoItem!
 }
