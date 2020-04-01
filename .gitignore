@@ -75,7 +75,8 @@ tsconfig.tsbuildinfo
 # intelliJ workspace files
 .idea
 
-schema.gql
+# temporarily add the schema.gql file in order to show the issue!
+# schema.gql
 
 documentation/.docusaurus
 /**/package-lock.json
